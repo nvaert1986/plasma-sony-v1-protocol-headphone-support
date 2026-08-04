@@ -1,0 +1,10 @@
+# Runtime
+PyQt6>=6.5
+
+# Optional: nicer RFCOMM channel resolution (SDP). If absent, the app falls
+# back to a gentle validated channel probe. PyBluez may not build on very new
+# Python versions.
+# pybluez2
+
+# Dev
+# pytest

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Sony Headphone Support
+GenericName=Headphone Configuration
+Comment=Configure Sony WH-1000XM3/XM4 headphones over Bluetooth
+Exec=python3 /home/nvanaert/Projects/plasma-sony-v1-protocol-headphone-support/main.py
+Icon=audio-headphones
+Terminal=false
+Categories=AudioVideo;Audio;Settings;
+Keywords=sony;headphones;bluetooth;noise;cancelling;ambient;
