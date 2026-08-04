@@ -63,9 +63,13 @@ changes, but these are the units verified on real hardware:
 |---|---|---|
 | Sony **WH-1000XM3** (×2 units) | **4.5.2** | ✅ Confirmed working |
 | Sony **WH-1000XM4** | **3.0.1** | ✅ Confirmed working |
+| Sony **MDR-1000X** (original, 2016) | — | ℹ️ Tested — **read-only info only** (no Sony config service) |
 
-Both models were tested end to end: connecting, reading back existing settings, and
-changing every exposed control, on the firmware versions listed above.
+The XM3 and XM4 were tested end to end: connecting, reading back existing settings,
+and changing every exposed control, on the firmware versions listed above. The
+original MDR-1000X was tested too but predates the Sony configuration service, so it
+cannot be controlled — the app detects it and shows only a read-only Information tab
+(model, battery, codec).
 
 Other Sony headphones that use the same **MDR v1/table1** protocol (for example
 WF-1000XM3, WI-1000XM2, and various WH-XB / WH-CH models) are expected to work and
@@ -172,6 +176,35 @@ untested.
   DSEE, controls (CUSTOM button, touch panel, pause-when-removed), and connectivity
   (Sound Quality Mode, Multipoint). Built on a headless, unit-tested protocol
   package.
+
+## Reporting a new or older device
+
+The app speaks Sony's **MDR v1/table1** protocol, which many other Sony headsets use
+(the older WH-1000XM2, the noise-cancelling `-N` mid-range models such as WH-XB900N /
+WH-H900N, and more). Most should connect and show whatever they advertise, but each
+model needs a quick check before it can be called *supported* — the noise-cancelling
+encoding in particular varies between models.
+
+If you have such a headset, **`collect-device-info.sh`** gathers everything needed to
+add or confirm support. It is **read-only**: it runs the same capability-gated
+handshake the app uses and changes no settings.
+
+**Requirements:** Python 3.10+ (PyQt6 is *not* needed for this script), BlueZ with
+`bluetoothctl`, and the headset **paired, trusted, and connected**.
+
+```bash
+./collect-device-info.sh                       # auto-detect the one connected Sony headset
+./collect-device-info.sh AA:BB:CC:DD:EE:FF     # or target a specific MAC
+```
+
+It writes `sony-device-info-<timestamp>.txt` containing the device identity,
+`protocolVersion`, the full `CONNECT_RET_SUPPORT_FUNCTION` feature matrix, the
+GENERAL_SETTING slot titles, Auto-Power-Off options, and the raw NC/ASM state. Attach
+that file to your request so the model can be validated (and wired in if it needs a
+small per-model tweak).
+
+The original **MDR-1000X** has no configuration service, so it can only be shown
+read-only — there's nothing to collect there.
 
 ## Credits & basis
 
